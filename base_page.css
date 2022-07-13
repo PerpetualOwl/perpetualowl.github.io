@@ -2665,6 +2665,10 @@ a{text-decoration-line: none;}
   height: 100px;
 }
 
+.small-spacer {
+  height: 15px;
+}
+
 .heading-jumbo {
   margin-top: 10px;
   margin-bottom: 10px;
