@@ -2657,6 +2657,14 @@ figcaption {
   opacity: 0.6;
 }
 
+.paragraph-list { white-space: nowrap; }
+
+a{text-decoration-line: none;}
+
+.spacer {
+  height: 100px;
+}
+
 .heading-jumbo {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -2707,6 +2715,10 @@ figcaption {
 .paragraph-small {
   font-size: 14px;
   line-height: 26px;
+}
+
+.link {
+  display: inline;
 }
 
 .logo-link {
@@ -2764,8 +2776,9 @@ figcaption {
 
 .navigation {
   position: -webkit-sticky;
-  position: sticky;
+  position: fixed;
   top: 0px;
+  width: 100vw;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3792,7 +3805,7 @@ figcaption {
   }
 
   .navigation-wrap {
-    background-color: #fff;
+    background-color: #d2d2d2;
   }
 
   .navigation {
