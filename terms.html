@@ -28,25 +28,24 @@
                             to regain control of their data. Please familiarize yoursel with our privacy policy and our
                             terms and conditions below.</p>
                     </div>
-                    <div><a href="/terms" class="button w-inline-block button-4">
+                    <div><a href="/terms/terms-of-use-file.docx" class="button w-inline-block button-4">
                             <div>Download TERMS AND CONDITIONS</div>
                         </a>
                         <div class="spacer"></div>
-                        <a href="/terms" class="button w-inline-block button-4">
+                        <a href="/terms/privacy-policy-file.docx" class="button w-inline-block button-4">
                             <div>Download PRIVACY POLICY</div>
                         </a>
                     </div>
                 </div>
             </div>
             <div class="divider"></div>
-            <div class="spacer"></div>
-            <h2 class="section-heading">TERMS & CONDITIONS</h2>
-            <div class="paragraph-light">INSERT RELEVANT TEXT HERE</div>
+            <div id="termsofusejs"></div>
+            <script type="text/javascript">$("#termsofusejs").load("./terms/terms-of-use.html #termsofuse");</script>
             <div class="spacer"></div>
             <div class="divider"></div>
             <div class="spacer"></div>
-            <h2 class="section-heading">PRIVACY POLICY</h2>
-            <div class="paragraph-light">INSERT RELEVANT TEXT HERE</div>
+            <div id="privacypolicyjs"></div>
+            <script type="text/javascript">$("#privacypolicyjs").load("./terms/privacy-policy.html #container");</script>
             <div class="spacer"></div>
         </div>
     </div>
