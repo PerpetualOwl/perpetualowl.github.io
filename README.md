@@ -2,4 +2,6 @@
 
 Please view the [website](https://perpetualowl.github.io/).
 
-OUTDATED HAS BEEN MOVED TO BONBON-EXCHANGE ORGANIZATION
+This is PerpetualOwl's test website hosting location. Everything here is for testing purposes only.
+
+
