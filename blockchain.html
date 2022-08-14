@@ -25,46 +25,54 @@
 
 <body>
   <div class="container-fluid">
-    <div class="row">
-      <h1>Blockchain</h1>
-    </div>
-    <h3>Validated Actions</h3>
+    
     <div class="d-flex flex-nowrap">
+
+
       <div class="col-sm-5">
         <div class="card card-block" id="block1chain1card">
           <div class="card-body">
             <form class="form-horizontal">
-              <div class="form-group"><label class="col-sm-2 control-label" for="block1chain1number">Block:</label>
+              <div class="form-group"><label class="control-label" for="block1chain1number">Block (Initiate Smart Contract):</label>
                 <div class="col-sm">
                   <div class="input-group"><span class="input-group-addon">#</span><input class="form-control"
                       id="block1chain1number" type="text" value="1" onkeyup="updateChain(1, 1, 0);"></div>
                 </div>
               </div>
-              <div class="form-group"><label class="col-sm-2 control-label" for="block1chain1nonce">Nonce:</label>
+              <div class="form-group"><label class="control-label" for="block1chain1nonce">Nonce:</label>
                 <div class="col-sm"><input class="form-control" id="block1chain1nonce" type="text" value="16119"
                     onkeyup="updateChain(1, 1, 0);"></div>
               </div>
-              <div class="form-group"><label class="col-sm-2 control-label">Coinbase:</label>
+              <div class="form-group"><label class="control-label">Smart Contract:</label>
                 <div class="col-sm">
                   <div class="input-group">
-                    <div class="input-group-addon">$</div><input class="form-control" id="block1chain1coinbasevalue"
-                      type="text" value="100.00" onkeyup="updateChain(1, 1, 0);">
-                    <div class="input-group-addon">-&gt;</div><input class="form-control" id="block1chain1coinbaseto"
+                    <div class="input-group-addon">Cusip:</div><input class="form-control" id="block2chain1tx0value"
+                      type="text" value="075896AC4" onkeyup="updateChain(2, 1, 4);">
+                    <div class="input-group-addon">Price:</div><input class="form-control" id="block2chain1tx0seq"
                       type="text"
-                      value="04fe1be031bc7a54d900ff062911bc4f7ba0edb39e4280268e490b79e347e3b8b0019c252aad7536ef7caeb061d558cac2eaec43ff670d76a521bec77c35751310"
+                      value="20.7m"
+                      onkeyup="updateChain(1, 1, 0);">
+                    <div class="input-group-addon">Lot:</div><input class="form-control" id="block2chain1tx0to"
+                      type="text"
+                      value="107.2k"
                       onkeyup="updateChain(1, 1, 0);">
                   </div>
+                  <div class="input-group">
+                    <div class="input-group-addon">From:</div><input class="form-control"
+                      id="block2chain1tx0from" type="text" value="04fe1be031bc7a54d900ff062911bc4f7ba0edb39e4280268e490b79e347e3b8b0019c252aad7536ef7caeb061d558cac2eaec43ff670d76a521bec77c35751310" onkeyup="updateChain(2, 1, 4);">
+                    <div class="input-group-addon">Signature:</div><input class="form-control" id="block2chain1tx0sig"
+                      type="text"
+                      value="3046022100cf33ee8c696edd0b0c291a259e0a03ea2491f8febd396244e309d175bc8b6b7c022100a85b8b15e037ac42d9f2545e568d2433ede51e59f4bbfd4179f285fac1a10f66"
+                      onkeyup="updateChain(1, 1, 0);">
+                  </div><br>
                 </div>
               </div>
-              <div class="form-group"><label class="col-sm-2 control-label">Tx:</label>
-                <div class="col-sm"></div>
-              </div>
-              <div class="form-group" id="state"><label class="col-sm-2 control-label"
+              <div class="form-group" id="state"><label class="control-label"
                   for="block1chain1previous">Prev:</label>
                 <div class="col-sm"><input class="form-control" id="block1chain1previous" type="text"
                     value="0000000000000000000000000000000000000000000000000000000000000000"></div>
               </div>
-              <div class="form-group" id="state"><label class="col-sm-2 control-label"
+              <div class="form-group" id="state"><label class="control-label"
                   for="block1chain1hash">Hash:</label>
                 <div class="col-sm"><input class="form-control" id="block1chain1hash" type="text" disabled></div>
               </div>
@@ -77,33 +85,24 @@
           </div>
         </div>
       </div>
+
+
+
       <div class="col-sm-5">
         <div class="card card-block" id="block2chain1card">
           <div class="card-body">
             <form class="form-horizontal">
-              <div class="form-group"><label class="col-sm-2 control-label" for="block2chain1number">Block:</label>
+              <div class="form-group"><label class="control-label" for="block2chain1number">Block (Bid/Offer):</label>
                 <div class="col-sm">
                   <div class="input-group"><span class="input-group-addon">#</span><input class="form-control"
                       id="block2chain1number" type="text" value="2" onkeyup="updateChain(2, 1, 4);"></div>
                 </div>
               </div>
-              <div class="form-group"><label class="col-sm-2 control-label" for="block2chain1nonce">Nonce:</label>
+              <div class="form-group"><label class="control-label" for="block2chain1nonce">Nonce:</label>
                 <div class="col-sm"><input class="form-control" id="block2chain1nonce" type="text" value="25205"
                     onkeyup="updateChain(2, 1, 4);"></div>
               </div>
-              <div class="form-group"><label class="col-sm-2 control-label">Coinbase:</label>
-                <div class="col-sm">
-                  <div class="input-group">
-                    <div class="input-group-addon">$</div><input class="form-control" id="block2chain1coinbasevalue"
-                      type="text" value="100.00" onkeyup="updateChain(2, 1, 4);">
-                    <div class="input-group-addon">-&gt;</div><input class="form-control" id="block2chain1coinbaseto"
-                      type="text"
-                      value="04fe1be031bc7a54d900ff062911bc4f7ba0edb39e4280268e490b79e347e3b8b0019c252aad7536ef7caeb061d558cac2eaec43ff670d76a521bec77c35751310"
-                      onkeyup="updateChain(2, 1, 4);">
-                  </div>
-                </div>
-              </div>
-              <div class="form-group"><label class="col-sm-2 control-label">Tx:</label>
+              <div class="form-group"><label class="control-label">Tx:</label>
                 <div class="col-sm">
                   <div class="input-group">
                     <div class="input-group-addon">$</div><input class="form-control" id="block2chain1tx0value"
@@ -187,12 +186,12 @@
                   </div><br>
                 </div>
               </div>
-              <div class="form-group" id="state"><label class="col-sm-2 control-label"
+              <div class="form-group" id="state"><label class="control-label"
                   for="block2chain1previous">Prev:</label>
                 <div class="col-sm"><input class="form-control" id="block2chain1previous" type="text"
                     value="00006908f507a101e89544498978e9bd2e35462b91d86ef13510685227912e77"></div>
               </div>
-              <div class="form-group" id="state"><label class="col-sm-2 control-label"
+              <div class="form-group" id="state"><label class="control-label"
                   for="block2chain1hash">Hash:</label>
                 <div class="col-sm"><input class="form-control" id="block2chain1hash" type="text" disabled></div>
               </div>
@@ -209,17 +208,17 @@
         <div class="card card-block" id="block3chain1card">
           <div class="card-body">
             <form class="form-horizontal">
-              <div class="form-group"><label class="col-sm-2 control-label" for="block3chain1number">Block:</label>
+              <div class="form-group"><label class="control-label" for="block3chain1number">Block:</label>
                 <div class="col-sm">
                   <div class="input-group"><span class="input-group-addon">#</span><input class="form-control"
                       id="block3chain1number" type="text" value="3" onkeyup="updateChain(3, 1, 3);"></div>
                 </div>
               </div>
-              <div class="form-group"><label class="col-sm-2 control-label" for="block3chain1nonce">Nonce:</label>
+              <div class="form-group"><label class="control-label" for="block3chain1nonce">Nonce:</label>
                 <div class="col-sm"><input class="form-control" id="block3chain1nonce" type="text" value="29164"
                     onkeyup="updateChain(3, 1, 3);"></div>
               </div>
-              <div class="form-group"><label class="col-sm-2 control-label">Coinbase:</label>
+              <div class="form-group"><label class="control-label">Coinbase:</label>
                 <div class="col-sm">
                   <div class="input-group">
                     <div class="input-group-addon">$</div><input class="form-control" id="block3chain1coinbasevalue"
@@ -231,7 +230,7 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group"><label class="col-sm-2 control-label">Tx:</label>
+              <div class="form-group"><label class="control-label">Tx:</label>
                 <div class="col-sm">
                   <div class="input-group">
                     <div class="input-group-addon">$</div><input class="form-control" id="block3chain1tx0value"
@@ -295,12 +294,12 @@
                   </div><br>
                 </div>
               </div>
-              <div class="form-group" id="state"><label class="col-sm-2 control-label"
+              <div class="form-group" id="state"><label class="control-label"
                   for="block3chain1previous">Prev:</label>
                 <div class="col-sm"><input class="form-control" id="block3chain1previous" type="text"
                     value="00008ccb2fccac084b800a2878d317e14fe88fddb1e91d131d1fc3d523d67125"></div>
               </div>
-              <div class="form-group" id="state"><label class="col-sm-2 control-label"
+              <div class="form-group" id="state"><label class="control-label"
                   for="block3chain1hash">Hash:</label>
                 <div class="col-sm"><input class="form-control" id="block3chain1hash" type="text" disabled></div>
               </div>
@@ -317,17 +316,17 @@
         <div class="card card-block" id="block4chain1card">
           <div class="card-body">
             <form class="form-horizontal">
-              <div class="form-group"><label class="col-sm-2 control-label" for="block4chain1number">Block:</label>
+              <div class="form-group"><label class="control-label" for="block4chain1number">Block:</label>
                 <div class="col-sm">
                   <div class="input-group"><span class="input-group-addon">#</span><input class="form-control"
                       id="block4chain1number" type="text" value="4" onkeyup="updateChain(4, 1, 3);"></div>
                 </div>
               </div>
-              <div class="form-group"><label class="col-sm-2 control-label" for="block4chain1nonce">Nonce:</label>
+              <div class="form-group"><label class="control-label" for="block4chain1nonce">Nonce:</label>
                 <div class="col-sm"><input class="form-control" id="block4chain1nonce" type="text" value="51263"
                     onkeyup="updateChain(4, 1, 3);"></div>
               </div>
-              <div class="form-group"><label class="col-sm-2 control-label">Coinbase:</label>
+              <div class="form-group"><label class="control-label">Coinbase:</label>
                 <div class="col-sm">
                   <div class="input-group">
                     <div class="input-group-addon">$</div><input class="form-control" id="block4chain1coinbasevalue"
@@ -339,7 +338,7 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group"><label class="col-sm-2 control-label">Tx:</label>
+              <div class="form-group"><label class="control-label">Tx:</label>
                 <div class="col-sm">
                   <div class="input-group">
                     <div class="input-group-addon">$</div><input class="form-control" id="block4chain1tx0value"
@@ -403,12 +402,12 @@
                   </div><br>
                 </div>
               </div>
-              <div class="form-group" id="state"><label class="col-sm-2 control-label"
+              <div class="form-group" id="state"><label class="control-label"
                   for="block4chain1previous">Prev:</label>
                 <div class="col-sm"><input class="form-control" id="block4chain1previous" type="text"
                     value="000029942f0286f943ac7e877d7f10c3902aecbb2eebc72a758ab40487b0b8f9"></div>
               </div>
-              <div class="form-group" id="state"><label class="col-sm-2 control-label"
+              <div class="form-group" id="state"><label class="control-label"
                   for="block4chain1hash">Hash:</label>
                 <div class="col-sm"><input class="form-control" id="block4chain1hash" type="text" disabled></div>
               </div>
@@ -425,17 +424,17 @@
         <div class="card card-block" id="block5chain1card">
           <div class="card-body">
             <form class="form-horizontal">
-              <div class="form-group"><label class="col-sm-2 control-label" for="block5chain1number">Block:</label>
+              <div class="form-group"><label class="control-label" for="block5chain1number">Block:</label>
                 <div class="col-sm">
                   <div class="input-group"><span class="input-group-addon">#</span><input class="form-control"
                       id="block5chain1number" type="text" value="5" onkeyup="updateChain(5, 1, 4);"></div>
                 </div>
               </div>
-              <div class="form-group"><label class="col-sm-2 control-label" for="block5chain1nonce">Nonce:</label>
+              <div class="form-group"><label class="control-label" for="block5chain1nonce">Nonce:</label>
                 <div class="col-sm"><input class="form-control" id="block5chain1nonce" type="text" value="172517"
                     onkeyup="updateChain(5, 1, 4);"></div>
               </div>
-              <div class="form-group"><label class="col-sm-2 control-label">Coinbase:</label>
+              <div class="form-group"><label class="control-label">Coinbase:</label>
                 <div class="col-sm">
                   <div class="input-group">
                     <div class="input-group-addon">$</div><input class="form-control" id="block5chain1coinbasevalue"
@@ -447,7 +446,7 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group"><label class="col-sm-2 control-label">Tx:</label>
+              <div class="form-group"><label class="control-label">Tx:</label>
                 <div class="col-sm">
                   <div class="input-group">
                     <div class="input-group-addon">$</div><input class="form-control" id="block5chain1tx0value"
@@ -531,12 +530,12 @@
                   </div><br>
                 </div>
               </div>
-              <div class="form-group" id="state"><label class="col-sm-2 control-label"
+              <div class="form-group" id="state"><label class="control-label"
                   for="block5chain1previous">Prev:</label>
                 <div class="col-sm"><input class="form-control" id="block5chain1previous" type="text"
                     value="0000f79349c800b2ef5ed40ba485e4abb75158f60f0fe7a962b5bd0fa6ccf1a0"></div>
               </div>
-              <div class="form-group" id="state"><label class="col-sm-2 control-label"
+              <div class="form-group" id="state"><label class="control-label"
                   for="block5chain1hash">Hash:</label>
                 <div class="col-sm"><input class="form-control" id="block5chain1hash" type="text" disabled></div>
               </div>
