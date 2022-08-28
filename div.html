@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+
+<body>
+
+      <div style="font: 14px &quot;Lucida Grande&quot;, Helvetica, Arial, sans-serif;min-height: 75rem;padding-top: 4.5rem; position: relative;min-height: 100%;height: 100%;" class="col-sm-5">
+        <style scoped>
+            @import "https://andersbrownworth.com/blockchain/public-private-keys/stylesheets/lib/bootstrap.min.css";
+        </style>
+        <div style="background: #E6F4EA;" class="card card-block" id="block1chain1card">
+          <div class="card-body">
+            <form class="form-horizontal">
+              <div class="form-group"><label class="control-label" for="block1chain1number">Block (Initiate Smart Contract):</label>
+                <div class="col-sm">
+                  <div class="input-group"><span class="input-group-addon">#</span><input class="form-control" id="block1chain1number" type="text" value="1" onkeyup="updateChain(1, 1, 0);" style="font-family: monospace;"></div>
+                </div>
+              </div>
+              <div class="form-group"><label class="control-label">Smart Contract (Auction Protocol):</label>
+                <div class="col-sm">
+                  <div class="input-group">
+                    <div class="input-group-addon">Cusip</div><input class="form-control" id="block1chain1tx0value" type="text" value="075896AC4" onkeyup="updateChain(2, 1, 4);" style="font-family: monospace;">
+                    </div><div class="input-group"><div class="input-group-addon">Price</div><input class="form-control" id="block1chain1tx0seq" type="text" value="20.7m" onkeyup="updateChain(1, 1, 0);" style="font-family: monospace;">
+                    </div><div class="input-group"><div class="input-group-addon">Lot</div><input class="form-control" id="block1chain1tx0to" type="text" value="107.2k" onkeyup="updateChain(1, 1, 0);" style="font-family: monospace;">
+                  </div>
+                  <div class="input-group">
+                    <div class="input-group-addon">From</div><input class="form-control" id="block1chain1tx0from" type="text" value="geraldo@bam.money" onkeyup="updateChain(2, 1, 4);" style="font-family: monospace;">
+                    </div><div class="input-group"><div class="input-group"><div class="input-group-addon">To</div><input class="form-control" id="block1chain1tx0sig" type="text" value="howard@bam.money" onkeyup="updateChain(1, 1, 0);" style="font-family: monospace;">
+                  </div></div><br>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-2"><i class="icon-spinner icon-spin icon-large"></i></div>
+                <div class="col-sm"><button class="btn btn-primary ladda-button" id="block1chain1mineButton" data-style="expand-right"><span class="ladda-label">Update</span></button></div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+</body>
+
+</html>
