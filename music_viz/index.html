@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Final Project</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <script src="./d3.v7.min.js"></script>
+    <script type='text/javascript' src="./toggle.js"></script>
+    <script type="module" src="./main.js"></script>
+
+    <div>
+        <div style="width: 60%; height: auto; position: absolute; left:30px; top: 50px; z-index: 4">
+            <span id="scatterplot"></span>
+        </div>
+
+        <div
+            style="position: absolute; right:100px; top: 50px; z-index: 6; background-color: aliceblue; border:aliceblue; border-radius: 20px; padding:20px">
+            <div>TOGGLE GENRE/ARTIST</div><br>
+            <form id="form" class="btn-group btn-group-toggle" data-toggle="buttons" name="toggle">
+                <label class="btn btn-secondary active">
+                    <input type="radio" onchange="changeColor()" name="controlHeatmapType" value="MRR"
+                        checked>Artist<br>
+                </label>
+                <label class="btn btn-secondary">
+                    <input type="radio" onchange="changeColor()" name="controlHeatmapType" value="LYL">Genre<br>
+                </label>
+            </form>
+            <br><br>
+            <div>Hoverable list of genres or artists</div><br>
+            <div id="hover-menu" class="btn-group btn-group-vertical"
+                style="display: block; margin-left: auto; margin-right: auto;" onmouseout="hover('default')">
+            </div>
+        </div>
+
+        <!-- <div style="position: absolute; right:200px; top: 500px; z-index:7">
+            Selection Information<br><br>
+            <div>Top Artist</div>
+            <div>Top Genre</div>
+            <div>Average Hours Listened</div>
+            <div>Average Matches/Dates</div>
+        </div> -->
+    </div>
+
+</body>
+
+</html>
