@@ -150,7 +150,7 @@ function drawPolygons(airports) {
       tooltip.attr("y", airport.y);
 
       // set the tooltip text
-      tooltip.text(airport.iata + " total matches: " + (airport.outgoing + airport.incoming));
+      tooltip.text(airport.iata + " Matches: " + (airport.outgoing + airport.incoming));
 
       // double check if the anchor needs to be changed
       let bbox = tooltip.node().getBBox();
