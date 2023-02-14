@@ -8,6 +8,7 @@ const urls = {
     "./connections.csv"
 };
 
+const houses = ["Adams", "Quincy", "Dunster", "Cabot", "Eliot", "Currier", "Pforzheimer", "Winthrop", "Mather", "Lowell", "Leverett", "Kirkland", "Yard"];
 const svg = d3.select("svg");
 
 const width = parseInt(svg.attr("width"));
@@ -62,6 +63,7 @@ function processData(values) {
   // calculate incoming and outgoing degree based on flights
   // flights are given by airport iata code (not index)
   flights.forEach(function (link) {
+    console.log(link);
     link.source = iata.get(link.origin);
     link.target = iata.get(link.destination);
 
@@ -148,7 +150,7 @@ function drawPolygons(airports) {
       tooltip.attr("y", airport.y);
 
       // set the tooltip text
-      tooltip.text(airport.iata);
+      tooltip.text(airport.iata + " total matches: " + (airport.outgoing + airport.incoming));
 
       // double check if the anchor needs to be changed
       let bbox = tooltip.node().getBBox();
@@ -303,6 +305,7 @@ function typeAirport(airport) {
 function typeFlight(flight) {
   flight.count = parseInt(flight.count);
   return flight;
+
 }
 function distance(source, target) {
   const dx2 = Math.pow(target.x - source.x, 2);

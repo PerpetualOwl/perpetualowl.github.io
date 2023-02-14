@@ -7,6 +7,8 @@ dorms = houses
 google_api_key = "AIzaSyASlhiI1PI6HN3cwhtswOx3TUpbr9crmJU" #PLEASE DON'T OVERUSE THIS KEY
 print("Warning: CAREFUL DO NOT OVERUSE API KEY OR FREE TRIAL WILL RUN OUT")
 
+houses = ["Adams", "Quincy", "Dunster", "Cabot", "Eliot", "Currier", "Pforzheimer", "Winthrop", "Mather", "Lowell", "Leverett", "Kirkland", "Yard"]
+
 f = open("./connections.csv", "w")
 f.write("origin,destination,count\n")
 
