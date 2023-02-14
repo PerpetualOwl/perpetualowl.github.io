@@ -1,0 +1,30 @@
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Edge Bundling</title>
+
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://unpkg.com/d3-delaunay@4"></script>
+  <script src="https://unpkg.com/d3-geo-voronoi@1"></script>
+
+  <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- must be 960x600 to match topojson us atlas files -->
+<svg width="960" height="600" style="border-style: solid; border-width: 1px; border-color: gray">
+  <!-- must be in this order for drawing -->
+  <image href="./img.jpeg" height="600" width="960"/>
+  <g id="flights"></g>
+  <g id="airports"></g>
+  <g id="voronoi"></g>
+  <text id="tooltip" style="display: none;"></text>
+  <text text-anchor="end" x="955" y="595" class="mapbox">© Mapbox, © OpenStreetMap</text>
+</svg>
+
+<script type="text/javascript" src="script.js"></script>
+
+</body>
+</html>
