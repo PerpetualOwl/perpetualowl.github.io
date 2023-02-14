@@ -1,157 +1,78 @@
 origin,destination,count
-Adams House,Quincy House,200
-Adams House,Dunster House,49
-Adams House,Cabot House,33
-Adams House,Eliot House,36
-Adams House,Currier House,32
-Adams House,Pforzheimer House,32
-Adams House,Winthrop House,64
-Adams House,Mather House,46
-Adams House,Lowell House,45
-Adams House,Leverett House,34
-Adams House,Kirkland House,31
-Adams House,The Yard,55
-Quincy House,Adams House,61
-Quincy House,Dunster House,58
-Quincy House,Cabot House,62
-Quincy House,Eliot House,63
-Quincy House,Currier House,31
-Quincy House,Pforzheimer House,41
-Quincy House,Winthrop House,60
-Quincy House,Mather House,40
-Quincy House,Lowell House,58
-Quincy House,Leverett House,36
-Quincy House,Kirkland House,38
-Quincy House,The Yard,55
-Dunster House,Adams House,50
-Dunster House,Quincy House,64
-Dunster House,Cabot House,55
-Dunster House,Eliot House,60
-Dunster House,Currier House,45
-Dunster House,Pforzheimer House,64
-Dunster House,Winthrop House,41
-Dunster House,Mather House,43
-Dunster House,Lowell House,37
-Dunster House,Leverett House,55
-Dunster House,Kirkland House,40
-Dunster House,The Yard,32
-Cabot House,Adams House,45
-Cabot House,Quincy House,59
-Cabot House,Dunster House,39
-Cabot House,Eliot House,36
-Cabot House,Currier House,61
-Cabot House,Pforzheimer House,46
-Cabot House,Winthrop House,46
-Cabot House,Mather House,60
-Cabot House,Lowell House,60
-Cabot House,Leverett House,63
-Cabot House,Kirkland House,41
-Cabot House,The Yard,58
-Eliot House,Adams House,41
-Eliot House,Quincy House,50
-Eliot House,Dunster House,46
-Eliot House,Cabot House,65
-Eliot House,Currier House,47
-Eliot House,Pforzheimer House,55
-Eliot House,Winthrop House,44
-Eliot House,Mather House,35
-Eliot House,Lowell House,42
-Eliot House,Leverett House,33
-Eliot House,Kirkland House,38
-Eliot House,The Yard,40
-Currier House,Adams House,38
-Currier House,Quincy House,58
-Currier House,Dunster House,63
-Currier House,Cabot House,45
-Currier House,Eliot House,44
-Currier House,Pforzheimer House,33
-Currier House,Winthrop House,39
-Currier House,Mather House,41
-Currier House,Lowell House,58
-Currier House,Leverett House,39
-Currier House,Kirkland House,56
-Currier House,The Yard,32
-Pforzheimer House,Adams House,49
-Pforzheimer House,Quincy House,31
-Pforzheimer House,Dunster House,44
-Pforzheimer House,Cabot House,53
-Pforzheimer House,Eliot House,34
-Pforzheimer House,Currier House,43
-Pforzheimer House,Winthrop House,36
-Pforzheimer House,Mather House,55
-Pforzheimer House,Lowell House,39
-Pforzheimer House,Leverett House,41
-Pforzheimer House,Kirkland House,46
-Pforzheimer House,The Yard,54
-Winthrop House,Adams House,57
-Winthrop House,Quincy House,47
-Winthrop House,Dunster House,35
-Winthrop House,Cabot House,59
-Winthrop House,Eliot House,41
-Winthrop House,Currier House,62
-Winthrop House,Pforzheimer House,54
-Winthrop House,Mather House,53
-Winthrop House,Lowell House,61
-Winthrop House,Leverett House,49
-Winthrop House,Kirkland House,43
-Winthrop House,The Yard,41
-Mather House,Adams House,55
-Mather House,Quincy House,40
-Mather House,Dunster House,33
-Mather House,Cabot House,41
-Mather House,Eliot House,58
-Mather House,Currier House,34
-Mather House,Pforzheimer House,33
-Mather House,Winthrop House,63
-Mather House,Lowell House,37
-Mather House,Leverett House,40
-Mather House,Kirkland House,42
-Mather House,The Yard,57
-Lowell House,Adams House,33
-Lowell House,Quincy House,65
-Lowell House,Dunster House,42
-Lowell House,Cabot House,46
-Lowell House,Eliot House,37
-Lowell House,Currier House,50
-Lowell House,Pforzheimer House,62
-Lowell House,Winthrop House,38
-Lowell House,Mather House,45
-Lowell House,Leverett House,31
-Lowell House,Kirkland House,52
-Lowell House,The Yard,32
-Leverett House,Adams House,64
-Leverett House,Quincy House,57
-Leverett House,Dunster House,53
-Leverett House,Cabot House,61
-Leverett House,Eliot House,61
-Leverett House,Currier House,48
-Leverett House,Pforzheimer House,43
-Leverett House,Winthrop House,57
-Leverett House,Mather House,55
-Leverett House,Lowell House,42
-Leverett House,Kirkland House,41
-Leverett House,The Yard,57
-Kirkland House,Adams House,58
-Kirkland House,Quincy House,43
-Kirkland House,Dunster House,47
-Kirkland House,Cabot House,42
-Kirkland House,Eliot House,56
-Kirkland House,Currier House,40
-Kirkland House,Pforzheimer House,62
-Kirkland House,Winthrop House,42
-Kirkland House,Mather House,54
-Kirkland House,Lowell House,61
-Kirkland House,Leverett House,40
-Kirkland House,The Yard,33
-The Yard,Adams House,40
-The Yard,Quincy House,63
-The Yard,Dunster House,40
-The Yard,Cabot House,53
-The Yard,Eliot House,41
-The Yard,Currier House,33
-The Yard,Pforzheimer House,57
-The Yard,Winthrop House,37
-The Yard,Mather House,37
-The Yard,Lowell House,51
-The Yard,Leverett House,41
-The Yard,Kirkland House,55
+Winthrop,Adams,1
+Winthrop,Lowell,1
+Winthrop,Yard,2
+Winthrop,Pforzheimer,1
+Winthrop,Dunster,1
+Winthrop,Eliot,2
+Adams,Winthrop,0
+Adams,Pforzheimer,0
+Adams,Cabot,1
+Adams,Eliot,2
+Adams,Kirkland,3
+Adams,Yard,2
+Adams,Lowell,1
+Adams,Dunster,1
+Adams,Currier,1
+Lowell,Winthrop,0
+Lowell,Pforzheimer,1
+Lowell,Adams,1
+Lowell,Dunster,0
+Lowell,Lowell,1
+Lowell,Currier,1
+Lowell,Cabot,1
+Lowell,Quincy,0
+Yard,Winthrop,0
+Yard,Adams,1
+Yard,Yard,6
+Yard,Quincy,2
+Yard,Cabot,2
+Yard,Kirkland,1
+Yard,Currier,1
+Yard,Eliot,2
+Yard,Dunster,2
+Pforzheimer,Winthrop,0
+Pforzheimer,Adams,1
+Pforzheimer,Kirkland,3
+Pforzheimer,Lowell,1
+Pforzheimer,Dunster,1
+Pforzheimer,Cabot,1
+Pforzheimer,Eliot,1
+Pforzheimer,Quincy,1
+Dunster,Winthrop,0
+Dunster,Pforzheimer,0
+Dunster,Adams,1
+Dunster,Lowell,1
+Dunster,Quincy,1
+Dunster,Yard,1
+Dunster,Eliot,2
+Dunster,Kirkland,1
+Eliot,Winthrop,0
+Eliot,Pforzheimer,0
+Eliot,Adams,0
+Eliot,Yard,1
+Eliot,Dunster,0
+Eliot,Kirkland,0
+Kirkland,Pforzheimer,1
+Kirkland,Adams,0
+Kirkland,Yard,0
+Kirkland,Quincy,1
+Kirkland,Kirkland,2
+Kirkland,Dunster,0
+Kirkland,Eliot,1
+Cabot,Pforzheimer,0
+Cabot,Adams,0
+Cabot,Yard,0
+Cabot,Lowell,0
+Cabot,Quincy,0
+Quincy,Yard,0
+Quincy,Dunster,0
+Quincy,Kirkland,0
+Quincy,Pforzheimer,0
+Quincy,Lowell,1
+Quincy,Currier,1
+Quincy,Cabot,1
+Currier,Adams,0
+Currier,Lowell,0
+Currier,Yard,0
+Currier,Quincy,0
