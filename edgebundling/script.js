@@ -1,11 +1,11 @@
 const urls = {
   // source: https://gist.github.com/mbostock/7608400
   airports:
-    "./list_of_dorms.csv",
+    "https://raw.githubusercontent.com/PerpetualOwl/perpetualowl.github.io/main/edgebundling/list_of_dorms.csv",
 
   // source: https://gist.github.com/mbostock/7608400
   flights:
-    "./connections.csv"
+    "https://raw.githubusercontent.com/PerpetualOwl/perpetualowl.github.io/main/edgebundling/connections.csv"
 };
 
 const houses = ["Adams", "Quincy", "Dunster", "Cabot", "Eliot", "Currier", "Pforzheimer", "Winthrop", "Mather", "Lowell", "Leverett", "Kirkland", "Yard"];
