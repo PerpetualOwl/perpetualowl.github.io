@@ -1,6 +1,5 @@
 body {
   background-color: white;
-  text-align: center;
   font-family: sans-serif;
 }
 
@@ -62,5 +61,6 @@ g#voronoi {
 .mapbox {
   font-family: Cousine, sans-serif;
   font-weight: 400;
+  font-size: 8px;
   fill: #ffada8;
 }

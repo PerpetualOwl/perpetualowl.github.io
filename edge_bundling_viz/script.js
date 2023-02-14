@@ -21,8 +21,8 @@ const maxLon = -71.115963;
 
 const midLat = (maxLat + minLat) / 2;
 const midLon = (maxLon + minLon) / 2;
-const scale = 1200000;
-const projection = d3.geoMercator().scale(scale).center([midLon, midLat]).translate([480,300]);
+const scale = 600000 * 1.5;
+const projection = d3.geoMercator().scale(scale).center([midLon, midLat]).translate([240 * 1.5,150 * 1.5]);
 const scales = {
   airports: d3.scaleSqrt()
     .range([4, 18]),
@@ -93,7 +93,7 @@ function drawAirports(airports) {
     .data(airports, d => d.iata)
     .enter()
     .append("circle")
-    .attr("r", d => scales.airports(d.outgoing))
+    .attr("r", d => scales.airports(d.outgoing) / 2)
     .attr("cx", d => d.x) // calculated on load
     .attr("cy", d => d.y) // calculated on load
     .attr("class", "airport")
@@ -202,13 +202,13 @@ function drawFlights(airports, flights) {
     .alphaDecay(0.08)
     // nearby nodes attract each other
     .force("charge", d3.forceManyBody()
-      .strength(6)
+      .strength(0.15)
       .distanceMax(scales.airports.range()[1] * 2)
     )
     // edges want to be as short as possible
     // prevents too much stretching
     .force("link", d3.forceLink()
-      .strength(2)
+      .strength(0.5)
       .distance(0)
     )
     .on("tick", function (d) {
