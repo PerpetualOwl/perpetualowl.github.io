@@ -2,9 +2,8 @@ import random
 import requests
 
 school = "Harvard College"
-yard_dorms = ["Apley Court", "Canaday Hall", "Grays Hall", "Greenough Hall", "Hollis Hall", "Holworthy Hall", "Hurlbut Hall", "Lionel Hall", "Massachusetts Hall", "Matthews Hall", "Mower Hall", "Pennypacker Hall", "Stoughton Hall", "Straus Hall", "Thayer Hall", "Weld Hall", "Wigglesworth Hall", "Maple Yard Dorms"]
-houses = ["Adams House", "Quincy House", "Dunster House", "Cabot House", "Eliot House", "Currier House", "Pforzheimer House", "Winthrop House", "Mather House", "Lowell House", "Leverett House", "Kirkland House"]
-dorms = yard_dorms + houses
+houses = ["Adams House", "Quincy House", "Dunster House", "Cabot House", "Eliot House", "Currier House", "Pforzheimer House", "Winthrop House", "Mather House", "Lowell House", "Leverett House", "Kirkland House", "The Yard"]
+dorms = houses
 google_api_key = "AIzaSyASlhiI1PI6HN3cwhtswOx3TUpbr9crmJU" #PLEASE DON'T OVERUSE THIS KEY
 print("Warning: CAREFUL DO NOT OVERUSE API KEY OR FREE TRIAL WILL RUN OUT")
 

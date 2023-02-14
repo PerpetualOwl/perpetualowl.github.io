@@ -93,7 +93,7 @@ function drawAirports(airports) {
     .data(airports, d => d.iata)
     .enter()
     .append("circle")
-    .attr("r", d => scales.airports(d.outgoing) / 2)
+    .attr("r", d => scales.airports(d.outgoing))
     .attr("cx", d => d.x) // calculated on load
     .attr("cy", d => d.y) // calculated on load
     .attr("class", "airport")
