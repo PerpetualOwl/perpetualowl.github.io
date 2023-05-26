@@ -1,11 +1,11 @@
 const urls = {
   // source: https://gist.github.com/mbostock/7608400
   airports:
-    "./list_of_dorms.csv",
+    "https://raw.githubusercontent.com/PerpetualOwl/perpetualowl.github.io/main/edgebundling/list_of_dorms.csv",
 
   // source: https://gist.github.com/mbostock/7608400
   flights:
-    "./connections.csv"
+    "https://raw.githubusercontent.com/PerpetualOwl/perpetualowl.github.io/main/edgebundling/connections.csv"
 };
 
 const houses = ["Adams", "Quincy", "Dunster", "Cabot", "Eliot", "Currier", "Pforzheimer", "Winthrop", "Mather", "Lowell", "Leverett", "Kirkland", "Yard"];
@@ -150,7 +150,7 @@ function drawPolygons(airports) {
       tooltip.attr("y", airport.y);
 
       // set the tooltip text
-      tooltip.text(airport.iata + " total matches: " + (airport.outgoing + airport.incoming));
+      tooltip.text(airport.iata + " Matches: " + (airport.outgoing + airport.incoming));
 
       // double check if the anchor needs to be changed
       let bbox = tooltip.node().getBBox();
