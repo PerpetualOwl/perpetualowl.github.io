@@ -1,0 +1,43 @@
+body {
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+}
+
+.game-container {
+    width: 80%;
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#status p {
+    margin: 5px 0;
+}
+
+#events {
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #e8e8e8;
+    border-left: 5px solid #555555;
+}
+
+#choices button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#choices button:hover {
+    background-color: #ddd;
+}
