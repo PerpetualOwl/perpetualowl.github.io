@@ -1,0 +1,484 @@
+---
+title: "CpG Island Detection with Hidden Markov Models"
+author: "Adi, Howard, Isabel, James"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    number_sections: true
+    highlight: tango
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo    = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width  = 10,
+  fig.height = 5
+)
+```
+
+---
+
+# Overview
+
+This vignette walks through a complete Hidden Markov Model (HMM) pipeline
+for detecting **CpG islands** in the human genome. We apply the classic
+Durbin et al. (1998) dinucleotide-transition HMM to a 700 kb window of
+chromosome 22 (hg38) and evaluate our predictions against UCSC ground-truth
+annotations.
+
+By the end of this vignette you will be able to:
+
+- Understand why dinucleotide transitions are the right observation for CpG
+  island detection  
+- Construct the HMM transition matrix **A**, emission matrix **B**, and
+  initial distribution **π** from published biological parameters  
+- Run the Viterbi algorithm to decode the most likely hidden-state path  
+- Evaluate predictions with base-level sensitivity and precision  
+
+---
+
+# Background
+
+## What is a CpG Island?
+
+CpG dinucleotides (cytosine followed immediately by guanine on the same
+strand, written 5′-CpG-3′) are **depleted** across most of the mammalian
+genome because methylated cytosines spontaneously deaminate to thymine over
+evolutionary time. However, certain promoter-proximate regions resist
+methylation and therefore retain normal or elevated CpG frequencies — these
+are **CpG islands**.
+
+CpG islands are defined operationally (Gardiner-Garden & Frommer, 1987) as
+regions $\geq 200$ bp with:
+
+- GC content $\geq 55\%$  
+- Observed/expected CpG ratio $\geq 0.65$  
+
+Identifying CpG islands is important because roughly $70 \%$ of annotated gene
+promoters overlap a CpG island (Deaton & Bird, 2011), making them key
+targets in cancer epigenomics and gene-regulation research.
+
+## Why an HMM?
+
+The genome is a sequence. At each position we observe a DNA base, but the
+*biological state* (e.g. "is this position inside a CpG island?") is hidden.
+Adjacent positions share the same state with high probability (islands are
+hundreds to thousands of bp long), so the hidden-state sequence has strong
+Markovian structure. This makes an HMM a natural fit.
+
+---
+
+# Data
+
+## Genome sequence — `BSgenome.Hsapiens.UCSC.hg38`
+
+We use the Bioconductor `BSgenome` data package, which ships the entire hg38
+reference assembly as an R object. No external download is needed once the
+package is installed.
+
+```{r install, eval=FALSE}
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+
+BiocManager::install(c(
+  "BSgenome.Hsapiens.UCSC.hg38",
+  "rtracklayer",
+  "GenomicRanges"
+))
+
+install.packages("HMM")
+```
+
+```{r libraries}
+library(BSgenome.Hsapiens.UCSC.hg38)
+library(rtracklayer)
+library(GenomicRanges)
+library(HMM)
+```
+
+## Ground-truth annotations — UCSC `cpgIslandExt` track
+
+We fetch annotated CpG islands live from the UCSC Genome Browser via
+`rtracklayer::ucscTableQuery()`. The **cpgIslandExt** table is the extended
+CpG island track for hg38, curated using the Gardiner-Garden & Frommer
+(1987) criteria. It is used here solely as an evaluation benchmark.
+
+---
+
+# Extract the Sequence Window
+
+We focus on a 700 kb slice of chromosome 22 (positions 35,500,000 –
+36,200,000). This region is small enough to run the Viterbi algorithm
+interactively while still containing multiple annotated islands.
+
+```{r sequence}
+chr22_seq <- Hsapiens$chr22
+
+start_pos <- 35500000
+end_pos   <- 36200000
+seq_window <- subseq(chr22_seq, start = start_pos, end = end_pos)
+
+# Individual bases as a character vector
+dna_chars <- unlist(strsplit(as.character(seq_window), ""))
+dna_chars[!dna_chars %in% c("A", "C", "G", "T")] <- "A"
+n_bases <- length(dna_chars)
+```
+
+## Dinucleotide observations
+
+Rather than treating individual bases as observations, we form
+**dinucleotide transitions**: consecutive pairs of bases (AA, AC, AG, …, TT)
+giving $4 \times 4 = 16$ possible symbols. This is the key modelling insight from
+Durbin et al. (1998): the CG dinucleotide is the most discriminative feature
+between island and background, so making it directly observable is both
+natural and powerful.
+
+```{r dinucs}
+dinucs <- paste0(dna_chars[1:(n_bases - 1)], dna_chars[2:n_bases])
+```
+
+---
+
+# Define the HMM Parameters
+
+An HMM is fully specified by three objects:
+
+| Symbol | Name | Dimension | Meaning |
+|:----:|:------:|:-----:|:---------|
+| $\boldsymbol{\pi}$ | Initial distribution | $1 \times K$ | Probability of starting in each hidden state |
+| $A$ | Transition matrix | $K \times K$ | P(next state \| current state) |
+| $B$ | Emission matrix | $K \times V$ | P(observation \| hidden state) |
+
+where $K = 2$ hidden states $(\text{CpG+}, \text{CpG-})$ and $V = 16$ dinucleotide symbols.
+
+## Initial distribution $\boldsymbol{\pi}$
+
+CpG islands cover roughly 1–2 % of the human genome:
+
+$$
+\boldsymbol{\pi} = \begin{bmatrix} \text{CpG+} & \text{CpG-} \\ 0.02 & 0.98 \end{bmatrix}
+$$
+
+```{r pi}
+states     <- c("CpG+", "CpG-")
+startProbs <- c(0.02, 0.98)
+```
+
+## Transition matrix $A$
+
+The self-transition probabilities determine the expected length of each
+segment via a geometric distribution:
+
+$$
+\mathbb{E}[\text{island length}] = \frac{1}{1 - A_{\text{CpG+,CpG+}}}
+\qquad
+\mathbb{E}[\text{background length}] = \frac{1}{1 - A_{\text{CpG-,CpG-}}}
+$$
+
+We set:
+
+$$
+A = \begin{bmatrix}
+ & \text{CpG+} & \text{CpG-} \\
+\text{CpG+} & 0.998  & 0.002  \\
+\text{CpG-} & 0.0001 & 0.9999
+\end{bmatrix}
+$$
+
+giving expected island length $\approx 500$ bp and expected background length $\approx 10,000$ bp, consistent with the density observed in hg38.
+
+```{r transmat}
+transProbs <- matrix(
+  c(0.998,  0.002,
+    0.0001, 0.9999),
+  nrow = 2, byrow = TRUE,
+  dimnames = list(states, states)
+)
+```
+
+## Emission matrix $B$
+
+This is the most statistically interesting component. We do not directly
+observe which state we are in - we observe dinucleotides. The key
+discriminative signal is that **CG is enriched in islands and depleted in
+background**.
+
+### Source of parameters
+
+Parameters come from **Durbin, Eddy, Krogh & Mitchison (1998), Table 3.5**,
+trained on manually labelled human sequences. The table gives, for each
+state $s \in \{+, −\}$, a $4 \times 4$ matrix of **conditional dinucleotide
+frequencies** $B^s_{X,Y} = P(Y | X, s)$: the probability of observing base $Y$
+immediately after base $X$, given hidden state $s$.
+
+$$
+B^{+} = \begin{bmatrix}
+ & A & C & G & T \\
+A & 0.180 & 0.274 & 0.426 & 0.120 \\
+C & 0.171 & 0.368 & 0.274 & 0.188 \\
+G & 0.161 & 0.339 & 0.375 & 0.125 \\
+T & 0.079 & 0.355 & 0.384 & 0.182
+\end{bmatrix}
+\quad
+B^{-} = \begin{bmatrix}
+ & A & C & G & T \\
+A & 0.300 & 0.205 & 0.285 & 0.210 \\
+C & 0.322 & 0.298 & 0.078 & 0.302 \\
+G & 0.248 & 0.246 & 0.298 & 0.208 \\
+T & 0.177 & 0.239 & 0.292 & 0.292
+\end{bmatrix}
+$$
+
+Notice the CG entry: in CpG+ (island) the probability of observing G after C
+is $0.274$, whereas in CpG− (background) it collapses to $0.078$ - a 3.5-fold
+depletion reflecting the methylation-driven C to T mutation that characterises
+non-island DNA.
+
+### From 4 × 4 to 2 × 16
+
+The `HMM` package requires a flat $2 \times 16$ emission matrix whose rows are
+states and whose columns are the $16$ dinucleotide symbols. We convert using:
+
+$$
+B_s(XY) = P(XY \mid s) = P(X) \cdot P(Y \mid X, s)
+         = \frac{1}{4} \cdot B^s_{X,Y}
+$$
+
+where we assume uniform marginal base frequencies $P(X) = 1/4$. The key
+discriminative signal is entirely in the *ratio* $B^+_{X,Y} / B^−_{X,Y}$, so
+this simplification does not affect island/background discrimination. We then
+renormalise each row to sum to 1 as required.
+
+```{r emission}
+bases   <- c("A", "C", "G", "T")
+symbols <- as.vector(outer(bases, bases, paste0))   # AA, AC, ..., TT
+
+cpg_plus <- matrix(c(
+  0.180, 0.274, 0.426, 0.120,
+  0.171, 0.368, 0.274, 0.188,
+  0.161, 0.339, 0.375, 0.125,
+  0.079, 0.355, 0.384, 0.182
+), nrow = 4, byrow = TRUE,
+   dimnames = list(bases, bases))
+
+cpg_minus <- matrix(c(
+  0.300, 0.205, 0.285, 0.210,
+  0.322, 0.298, 0.078, 0.302,
+  0.248, 0.246, 0.298, 0.208,
+  0.177, 0.239, 0.292, 0.292
+), nrow = 4, byrow = TRUE,
+   dimnames = list(bases, bases))
+
+# Build 2 by 16 emission matrix
+emissionProbs <- matrix(0, nrow = 2, ncol = 16,
+                        dimnames = list(states, symbols))
+
+for (i in seq_along(bases)) {
+  for (j in seq_along(bases)) {
+    sym <- paste0(bases[i], bases[j])
+    emissionProbs["CpG+", sym] <- cpg_plus[i, j]  / 4
+    emissionProbs["CpG-", sym] <- cpg_minus[i, j] / 4
+  }
+}
+
+# Renormalise rows
+emissionProbs["CpG+", ] <- emissionProbs["CpG+", ] /
+  sum(emissionProbs["CpG+", ])
+emissionProbs["CpG-", ] <- emissionProbs["CpG-", ] /
+  sum(emissionProbs["CpG-", ])
+
+# Show the CG column as a sanity check
+round(emissionProbs[, "CG"], 4)
+```
+
+The ratio `emissionProbs["CpG+","CG"] / emissionProbs["CpG-","CG"]` should
+be $\approx 3.5$, confirming the CpG enrichment signal is preserved.
+
+## Initialise the model
+
+```{r inithmm}
+hmm_model <- initHMM(
+  States        = states,
+  Symbols       = symbols,
+  startProbs    = startProbs,
+  transProbs    = transProbs,
+  emissionProbs = emissionProbs
+)
+```
+
+---
+
+# Viterbi Decoding
+
+The **Viterbi algorithm** finds the single most probable sequence of hidden
+states given our observations and model parameters. Instead of enumerating
+all $K^N$ paths, it exploits the Markov property:
+at each position it only needs to remember the best path *ending in each
+state*, extending it one step at a time in $O(K^2 N)$ time.
+
+```{r viterbi}
+viterbi_path <- viterbi(hmm_model, dinucs)
+
+# Map dinucleotide states back to base positions
+base_states <- c(viterbi_path, viterbi_path[length(viterbi_path)])
+```
+
+## Post-processing: minimum island length filter
+
+Gardiner-Garden & Frommer (1987) require islands to be at least $200$ bp.
+Short runs of CpG+ predicted by Viterbi are almost certainly noise and are
+zeroed out.
+
+```{r filter}
+min_island_bp <- 200
+
+pred_numeric <- ifelse(base_states == "CpG+", 1L, 0L)
+rle_pred     <- rle(pred_numeric)
+
+run_end   <- cumsum(rle_pred$lengths)
+run_start <- c(1L, run_end[-length(run_end)] + 1L)
+
+for (k in seq_along(rle_pred$lengths)) {
+  if (rle_pred$values[k] == 1L &&
+      rle_pred$lengths[k] < min_island_bp) {
+    pred_numeric[run_start[k]:run_end[k]] <- 0L
+  }
+}
+```
+
+## Predicted islands
+
+```{r predicted-islands}
+rle_filtered <- rle(pred_numeric)
+filt_end     <- cumsum(rle_filtered$lengths)
+filt_start   <- c(1L, filt_end[-length(filt_end)] + 1L)
+island_idx   <- which(rle_filtered$values == 1L)
+n_predicted  <- length(island_idx)
+
+cat(sprintf("Predicted %d CpG island(s) after %d bp minimum-length filter\n",
+            n_predicted, min_island_bp))
+
+for (idx in island_idx) {
+  cat(sprintf("  %s:%d-%d  (%d bp)\n",
+              "chr22",
+              start_pos + filt_start[idx] - 1L,
+              start_pos + filt_end[idx]   - 1L,
+              rle_filtered$lengths[idx]))
+}
+```
+
+---
+
+# Ground-Truth Annotations
+
+We query the UCSC Genome Browser for the **cpgIslandExt** track over our
+window. This track is curated by UCSC using the Gardiner-Garden & Frommer
+(1987) algorithm and is widely used as a reference set in epigenomics.
+
+```{r ucsc}
+session    <- browserSession("UCSC")
+genome(session) <- "hg38"
+
+my_window   <- GRanges("chr22", IRanges(start_pos, end_pos))
+cpg_query   <- ucscTableQuery(session, table = "cpgIslandExt", range = my_window)
+true_islands <- track(cpg_query)
+print(true_islands)
+```
+
+---
+
+# Evaluation
+
+We compute base-level **sensitivity** (recall) and **precision** by building
+binary vectors for predictions and ground truth and comparing them position
+by position.
+
+$$
+\text{Sensitivity} = \frac{TP}{TP + FN}
+\qquad
+\text{Precision} = \frac{TP}{TP + FP}
+$$
+
+```{r eval}
+true_starts <- start(true_islands) - start_pos + 1L
+true_ends   <- end(true_islands)   - start_pos + 1L
+
+truth_numeric <- integer(n_bases)
+for (k in seq_along(true_starts)) {
+  s <- max(1L, true_starts[k])
+  e <- min(n_bases, true_ends[k])
+  if (s <= e) truth_numeric[s:e] <- 1L
+}
+
+tp <- sum(pred_numeric == 1L & truth_numeric == 1L)
+fp <- sum(pred_numeric == 1L & truth_numeric == 0L)
+fn <- sum(pred_numeric == 0L & truth_numeric == 1L)
+
+sensitivity <- round(tp / (tp + fn) * 100, 1)
+precision   <- round(tp / (tp + fp) * 100, 1)
+
+cat(sprintf("Base-level sensitivity: %.1f%%\n", sensitivity))
+cat(sprintf("Base-level precision:   %.1f%%\n", precision))
+```
+
+The model achieves **94.4 % sensitivity** and **86.1 % precision** against
+the UCSC annotations — strong performance for a fixed-parameter model with no
+training on this specific region.
+
+---
+
+# Visualisation
+
+```{r plot}
+par(mfrow = c(2, 1), mar = c(4, 6, 3, 1))
+
+# Panel 1 — HMM predictions
+plot(pred_numeric, type = "S", col = "#2166AC", lwd = 2,
+     yaxt = "n",
+     xlab = "Position in window (bp)",
+     ylab = "",
+     main = sprintf("Viterbi predicted CpG islands  (%d detected)", n_predicted))
+axis(2, at = c(0, 1), labels = c("Background", "CpG Island"), las = 2)
+
+# Panel 2 — UCSC ground truth
+plot(0, type = "n",
+     xlim = c(1, n_bases), ylim = c(0, 1),
+     yaxt = "n",
+     xlab = "Position in window (bp)",
+     ylab = "",
+     main = sprintf("UCSC annotated CpG islands  (%d in window)", length(true_islands)))
+axis(2, at = c(0, 1), labels = c("Background", "CpG Island"), las = 2)
+
+rect(xleft   = start(true_islands) - start_pos + 1L,
+     xright  = end(true_islands)   - start_pos + 1L,
+     ybottom = 0, ytop = 1,
+     col = "#1B7837", border = NA)
+```
+
+---
+
+# References
+
+- **Durbin, R., Eddy, S. R., Krogh, A., & Mitchison, G.** (1998).
+  *Biological Sequence Analysis: Probabilistic Models of Proteins and Nucleic
+  Acids*. Cambridge University Press. *(Table 3.5 provides the dinucleotide
+  transition frequencies used for B+ and B−.)*
+
+- **Gardiner-Garden, M., & Frommer, M.** (1987). CpG islands in vertebrate
+  genomes. *Journal of Molecular Biology*, 196(2), 261–282.
+
+- **Deaton, A. M., & Bird, A.** (2011). CpG islands and the regulation of
+  transcription. *Genes & Development*, 25(10), 1010–1022.
+
+- **Wu, H., Caffo, B., Jaffee, H. A., Irizarry, R. A., & Feinberg, A. P.**
+  (2010). Redefining CpG islands using hidden Markov models.
+  *Biostatistics*, 11(3), 499–514. PMC2883304.
+
+- **UCSC Genome Browser** cpgIslandExt track (hg38):
+  <https://genome.ucsc.edu/cgi-bin/hgTrackUi?db=hg38&g=cpgIslandExt>
